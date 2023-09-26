@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, Button  } from 'react-native';
 import CheckBox from '../CheckBox';
 
 
@@ -9,23 +9,55 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 3,
   },
+
+  bodyFlex: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+   
+  },
+
+  body:{
+    display: 'flex',
+    width: '100%',
+    height: '100%',
+  },
+
+  textItens:{
+    textAlign: 'center',
+    width: '100%',
+    backgroundColor: '#cfc8c8',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+
+  btn:{
+    margin: 10,
+  },
+
+  table:{
+    borderColor: '#000',
+    borderBottomWidth: 1,
+
+  },
 });
 
-const DisplayItems = ({ items }) => {
+export const DisplayItems = ({ items }) => {
   return (
-    <View>
+    <View style={styles.bodyFlex}>
       {items.map((item, index) => (
-        <Text key={index} style={styles.itemText}>
-          {item.weight}
-          {item.text}
-          <CheckBox/>
-        </Text>
+        <View style={styles.table}  key={index}>
+          <Text style={styles.itemText}>
+            {item.weight} {item.text}
+          </Text>
+          <CheckBox />
+        </View>
       ))}
     </View>
   );
 };
 
-export default function Items() {
+export default function ItemsStore() {
   const balcaoItems = [
     {
       text: 'LOJA ESTÁ ABERTA DURANTE SEU HORÁRIO DE FUNCIONAMENTO',
@@ -93,7 +125,7 @@ export default function Items() {
       weight: '3',
     },
     {
-      text: 'TODOS OS ALIMENTOS QUE PASSAM POR COCÇÃO SÃOPREPARADOS DE FORMAR A ATINGIR A TEMPERATURA INTERNA ADEQUADA',
+      text: 'TODOS OS ALIMENTOS QUE PASSAM POR COCÇÃO SÃO PREPARADOS DE FORMAR A ATINGIR A TEMPERATURA INTERNA ADEQUADA',
       weight: '3',
     },
   ];
@@ -148,19 +180,30 @@ export default function Items() {
 
 
   return (
-    <View>
+    <ScrollView>
+    <View style={styles.body}> 
+      <Text style={styles.textItens}>BALCÃO</Text>
       <DisplayItems items={balcaoItems} />       
+      <Text style={styles.textItens}>CASA DE MAQUINAS</Text>
       <DisplayItems items={machineHouseItems} />
+      <Text style={styles.textItens}>COPA</Text>
       <DisplayItems items={cupItems} />
+      <Text style={styles.textItens}>ESTOQUE</Text>
       <DisplayItems items={estorageItems} />
+      <Text style={styles.textItens}>FRITADEIRAS</Text>
       <DisplayItems items={frieItems} />
+      <Text style={styles.textItens}>GERENCIA</Text>
       <DisplayItems items={adminItems} />
+      <Text style={styles.textItens}>GESTÃO DE PESSOAS</Text>
       <DisplayItems items={peopleItems} />
+      <Text style={styles.textItens}>SALA DE LIXO</Text>
       <DisplayItems items={treashRoomItems} />
+      <Text style={styles.textItens}>SALADEIRA</Text>
       <DisplayItems items={greenItems} />
+      <Text style={styles.textItens}>SALÃO</Text>
       <DisplayItems items={roomItems} />
-
-     
+      <Button  style={styles.btn}  title="Generate PDF" />
     </View>
+    </ScrollView>
   );
 }
