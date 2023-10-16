@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity } from 'react-native';
 import DisplayItems from '../DisplayItems';
 import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
@@ -19,8 +19,26 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  btn: {
+  btnBody:{
+    display: 'flex',
+    alignItems:'center',
+    justifyContent: 'center',
+  },
+
+  button: {
+    width: 300,
+    backgroundColor: '#d42c26',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
     margin: 10,
+    
+  },
+  
+  buttonText: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: '900',
   },
 });
 
@@ -49,87 +67,90 @@ function DynamicItems(props) {
     }
   };
 
-  const html = `
-  <html>
-      <body>
-      ${createHtmlPart(items)}
-      </body>
-  <!-- CSS -->
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+  function createHtmlPart(itemsToTransform) {
+    const htmlFormatted = Distinct(itemsToTransform, 'type').map(typeItem => {
+      const title = String(typeItem);
+      const itemsFiltered = itemsToTransform.filter(x => x.type === title);
 
-    body {
-      margin: 10px;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    h1 {
-      text-decoration-line: underline;
-    }
-
-    .item {
-      display: flex;
-      align-items: center;
-      border: 1px solid black;
-      font-weight: 500;
-    }
-
-    .item p {
-      display: flex;
-      align-items: center;
-      border-right: 1px solid black;
-      padding: 0 5px; 
-      margin: 0;
-      min-height: 48px;
-    }
-
-    .item p:first-child {
-      width: 65%;
-    }
-
-    .item p:nth-child(2) {
-      width: 5%;
-    }
-
-    .item p:nth-child(3) {
-      width: 30%;
-    }
-  </style>
-  </html>
-`;
-
-function createHtmlPart(itemsToTransform) {
-  const htmlFormatted = Distinct(itemsToTransform, 'type').map(typeItem => {
-    const title = String(typeItem);
-    const itemsFiltered = itemsToTransform.filter(x => x.type === title);
-
-    // Transform items in list of tags
-    const newList = itemsFiltered.map(item => {
-      console.debug({item})
-      return `
+      // Transform items in list of tags
+      const newList = itemsFiltered.map(item => {
+        console.log({ item });
+        return `
           <div class="item" >
             <p>${item.weight} ${item.text}</p>
-            <p>${item.bool ? "SIM" : 'NÃO'}<p>
-            <p>${item.justicative || ' --- '}<p>
+            <p>${item.bool ? 'SIM' : 'NÃO'}<p>
+            <p>${item.justificative || '   '}<p>
           </div>
       `;
-    });
-    const newItemsHTML = newList.join('');
+      });
+      const newItemsHTML = newList.join('');
 
-    return `
+      const date = new Date();
+      const formattedDate = date.toLocaleDateString('pt-BR');
+
+      return `
+      <h2>${formattedDate}</h2>
         <h1>${title}</h1>
-        <h5>
+        <div>
           ${newItemsHTML}
-        </h5>
+        </div>
       `;
-  });
+    });
 
-  return htmlFormatted.join('');
-}
+    return htmlFormatted.join('');
+  }
 
   const generatePdf = async () => {
-    const fileName = `Check-List.pdf`;
+    const fileName = `Check-List`;
+    const html = `
+      <html>
+          <body>
+          ${createHtmlPart(items)}
+          </body>
+      <!-- CSS -->
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        body {
+          margin: 10px;
+          padding: 0;
+          font-family: 'Poppins', sans-serif;
+        }
+
+        h1 {
+          text-decoration-line: underline;
+        }
+
+        .item {
+          display: flex;
+          align-items: center;
+          border: 1px solid black;
+          font-weight: 500;
+        }
+
+        .item p {
+          display: flex;
+          align-items: center;
+          border-right: 1px solid black;
+          padding: 0 5px; 
+          margin: 0;
+          min-height: 48px;
+        }
+
+        .item p:first-child {
+          width: 60%;
+        }
+
+        .item p:nth-child(2) {
+          width: 5%;
+        }
+
+        .item p:nth-child(3) {
+          min-width: 30%;
+        }
+      </style>
+      </html>
+      `;
 
     const file = await printToFileAsync({
       html: html,
@@ -153,7 +174,14 @@ function createHtmlPart(itemsToTransform) {
             </>
           );
         })}
-        <Button style={styles.btn} title="Generate PDF" onPress={generatePdf} />
+        <View style={styles.btnBody}>
+         <TouchableOpacity
+          style={styles.button}
+          onPress={generatePdf}
+        >
+          <Text style={styles.buttonText}>Gerar relatorio</Text>
+        </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );

@@ -24,8 +24,6 @@ const styles = StyleSheet.create({
 const DisplayItems = props => {
   const { items, changeItem } = props;
 
-  const [justificative, setJustificative] = useState('');
-
   return (
     <View style={styles.bodyFlex}>
       {items.map((item, index) => (
@@ -34,10 +32,9 @@ const DisplayItems = props => {
             {item.weight} {item.text}
           </Text>
           <CheckBox
-            handleChecked={isChecked => {
+            handleChecked={(isChecked, justificative) => {
               changeItem && changeItem(isChecked, justificative, item.id);
             }}
-            setJustificative={setJustificative}
           />
         </View>
       ))}

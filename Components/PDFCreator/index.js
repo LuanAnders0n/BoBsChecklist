@@ -80,9 +80,9 @@ function createHtmlPart(itemsToTransform) {
     const newList = itemsFiltered.map(item => {
       return `
           <div>
-            <p>${item.weight} ${item.text}</p>
-            <p>${item.bool || 'NÃO'}<p>
-            <p>${item.justicative || ' --- '}<p>
+          <p>${item.weight} ${item.text}</p>
+          <p>${item.bool ? 'SIM' : 'NÃO'}<p>
+          <p>${item.justicative || '   '}<p>
           </div>
       `;
     });
@@ -98,14 +98,3 @@ function createHtmlPart(itemsToTransform) {
 
   return htmlFormatted;
 }
-
-const generatePdf = async () => {
-  const fileName = `Check-List`;
-  /* 
-  const file = await printToFileAsync({
-    html: html,
-    name: `${fileName}.pdf`,
-    base64: false,
-  });
-  await shareAsync(file.uri); */
-};

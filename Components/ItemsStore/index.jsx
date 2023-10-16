@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Button  } from 'react-native';
 import CheckBox from '../CheckBox';
 

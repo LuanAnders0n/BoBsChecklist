@@ -41,8 +41,8 @@ const Checked = props => {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    handleChecked && handleChecked(isChecked);
-  }, [isChecked]);
+    handleChecked && handleChecked(isChecked, inputValue);
+  }, [isChecked, inputValue]);
 
   return (
     <View style={styles.body}>

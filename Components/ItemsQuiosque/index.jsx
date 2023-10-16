@@ -1,6 +1,5 @@
-import React, { useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
-import CheckBox from '../CheckBox';
+import React from 'react';
+import { StyleSheet} from 'react-native';
 import DynamicItems from '../DynamicItems';
 
 const styles = StyleSheet.create({

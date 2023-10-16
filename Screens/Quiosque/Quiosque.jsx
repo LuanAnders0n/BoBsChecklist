@@ -5,7 +5,7 @@ import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 
 export default function Quiosque() {
-  var itemsQuiosque = [
+  let itemsQuiosque = [
     {
       type: 'BALCÃO',
       text: 'LOJA ESTÁ ABERTA DURANTE SEU HORÁRIO DE FUNCIONAMENTO',
